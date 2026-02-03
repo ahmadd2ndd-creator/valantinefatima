@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Sacramento', cursive;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffd1dc, #ffe6f0);
+}
+
+/* ---------- LAYERS ---------- */
+.background-hearts {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 2;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.page.active {
+  display: flex;
+  animation: pageFade 1s ease forwards;
+}
+
+@keyframes pageFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- TEXT ---------- */
+.main-text {
+  font-size: 4.2em;
+  color: #c2185b;
+  margin-bottom: 40px;
+}
+
+.scene3-title {
+  font-size: 3.2em;
+  color: #c2185b;
+  margin-bottom: 30px;
+}
+
+.scene3-sub {
+  font-size: 1.8em;
+  color: #c2185b;
+  margin-top: 25px;
+}
+
+/* ---------- BUTTONS ---------- */
+.buttons {
+  display: flex;
+  gap: 30px;
+  position: relative;
+}
+
+button {
+  font-size: 1.6em;
+  padding: 18px 48px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+}
+
+#yesBtn {
+  background: #ff4d88;
+  color: white;
+}
+
+#noBtn {
+  background: white;
+  color: #ff4d88;
+  position: relative;
+}
+
+/* ---------- PHOTOS ---------- */
+.photo-container {
+  display: flex;
+  gap: 30px;
+  animation: pageFade 1.2s ease forwards;
+}
+
+.photo-container img {
+  width: 220px;
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+/* ---------- HEARTS ---------- */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  animation: floatUp 10s linear infinite;
+  opacity: 0.5;
+  color: pink;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-120vh); opacity: 0; }
+}
+
+/* ---------- FIREWORKS ---------- */
+#fireworks {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: none;
+  z-index: 10;
+}
+
+.fire {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: explode 2.5s forwards;
+}
+
+@keyframes explode {
+  to {
+    transform: translate(var(--x), var(--y));
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background-hearts" id="hearts"></div>
+
+<!-- SCENE 1 -->
+<div class="page active" id="page1">
+  <div class="main-text">Fatima… will you be my Valentine?</div>
+  <div class="buttons">
+    <button id="yesBtn">Yes, I will</button>
+    <button id="noBtn">No</button>
+  </div>
+</div>
+
+<!-- FIREWORKS -->
+<div id="fireworks"></div>
+
+<!-- SCENE 3 -->
+<div class="page" id="page2">
+  <div class="scene3-title">Yayyy! I knew you'd say yesss</div>
+  <div class="photo-container">
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+    <img src="photo4.jpg">
+  </div>
+  <div class="scene3-sub">I can't wait to make memories with you.</div>
+</div>
+
+<script>
+/* ---------- HEART GENERATION ---------- */
+const hearts = document.getElementById("hearts");
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "❤";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = (12 + Math.random()*24) + "px";
+  h.style.color = Math.random() > 0.5 ? "#ff4d88" : "#ff7aa2";
+  hearts.appendChild(h);
+  setTimeout(() => h.remove(), 10000);
+}, 200);
+
+/* ---------- NO BUTTON ---------- */
+const guilt = [
+  "Wait… sure?",
+  "Really?",
+  "Try again",
+  "No escape",
+  "Still no?",
+  "Not happening"
+];
+let gi = 0;
+
+document.getElementById("noBtn").onclick = () => {
+  const btn = document.getElementById("noBtn");
+  btn.innerText = guilt[gi++ % guilt.length];
+  const maxX = window.innerWidth - btn.offsetWidth - 20;
+  const maxY = window.innerHeight - btn.offsetHeight - 20;
+  btn.style.position = "fixed";
+  btn.style.left = Math.random() * maxX + "px";
+  btn.style.top = Math.random() * maxY + "px";
+};
+
+/* ---------- YES + FIREWORKS ---------- */
+document.getElementById("yesBtn").onclick = () => {
+  const fw = document.getElementById("fireworks");
+  fw.style.display = "block";
+
+  for (let i = 0; i < 60; i++) {
+    const f = document.createElement("div");
+    f.className = "fire";
+    f.style.background = ["#ff4d88","#ff85c1","#ffd1dc"][Math.floor(Math.random()*3)];
+    f.style.left = Math.random()*100 + "vw";
+    f.style.top = Math.random()*100 + "vh";
+    f.style.setProperty("--x",(Math.random()*600-300)+"px");
+    f.style.setProperty("--y",(Math.random()*600-300)+"px");
+    fw.appendChild(f);
+    setTimeout(() => f.remove(), 2500);
+  }
+
+  setTimeout(() => {
+    fw.style.display = "none";
+    page1.classList.remove("active");
+    page2.classList.add("active");
+  }, 2500);
+};
+</script>
+
+</body>
+</html>
