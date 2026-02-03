@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+<meta charset="UTF-8">
 <title>Valentine</title>
 
 <!-- Elegant handwritten font -->
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -16,142 +14,140 @@
 
 body {
   margin: 0;
-  height: 100vh;
-  background: #ffd6e8;
+  font-family: 'Dancing Script', cursive;
+  background: #ffd6e7;
   overflow: hidden;
-  font-family: 'Great Vibes', cursive;
+  text-align: center;
 }
 
-/* ===== HEARTS ===== */
+/* ---------- HEARTS ---------- */
 .heart {
   position: absolute;
-  bottom: -10%;
-  color: rgba(255, 105, 180, 0.6);
-  animation: floatUp linear infinite;
-  z-index: 0;
+  bottom: -50px;
+  color: pink;
+  animation: float 10s linear infinite;
+  opacity: 0.8;
 }
 
-@keyframes floatUp {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-120vh);
-    opacity: 0;
-  }
+@keyframes float {
+  0% { transform: translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-120vh); opacity: 0; }
 }
 
-/* ===== PAGE 1 ===== */
+/* ---------- PAGE 1 ---------- */
 #page1 {
-  position: absolute;
-  inset: 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 2;
 }
 
 h1 {
-  color: #ff2f92;
   font-size: 64px;
-  font-weight: 500;
+  color: #ff2f68;
   margin-bottom: 40px;
-  text-align: center;
 }
 
-/* ===== BUTTONS ===== */
+/* ---------- BUTTONS ---------- */
 .buttons {
   display: flex;
   gap: 40px;
 }
 
 button {
-  font-family: inherit;
+  padding: 18px 36px;
   font-size: 28px;
-  padding: 14px 36px;
   border-radius: 50px;
+  border: 3px solid #ff6b9a;
   cursor: pointer;
-  background: white;
-  color: #ff2f92;
-  border: 3px solid #ff9fc9;
+  font-family: 'Dancing Script', cursive;
 }
 
+/* YES button */
+#yesBtn {
+  background: #ff2f68;
+  color: white;
+}
+
+/* NO button */
 #noBtn {
+  background: white;
+  color: black;
   position: relative;
 }
 
-/* ===== PAGE 2 ===== */
-#page2 {
+/* ---------- FIREWORKS ---------- */
+#fireworks {
   display: none;
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: black;
-  z-index: 3;
-  color: #ff5fa2;
-  text-align: center;
+  z-index: 999;
+}
+
+/* ---------- PAGE 2 ---------- */
+#page2 {
+  display: none;
+  height: 100vh;
+  background: #ffd6e7;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #page2 h2 {
-  margin-top: 40px;
   font-size: 56px;
-  font-weight: 500;
+  color: #ff2f68;
+  margin-bottom: 20px;
 }
 
 .photos {
   display: grid;
-  grid-template-columns: repeat(2, 200px);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  justify-content: center;
-  margin-top: 30px;
 }
 
 .photos img {
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-/* ===== FIREWORKS ===== */
-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+.big-text {
+  margin-top: 25px;
+  font-size: 44px;
+  color: #ff2f68;
+}
+
+.small-text {
+  font-size: 30px;
+  color: #ff4f82;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Hearts -->
-<script>
-for (let i = 0; i < 60; i++) {
-  const h = document.createElement("div");
-  h.className = "heart";
-  h.innerHTML = "❤";
-  h.style.left = Math.random() * 100 + "%";
-  h.style.fontSize = Math.random() * 40 + 20 + "px";
-  h.style.animationDuration = Math.random() * 6 + 6 + "s";
-  document.body.appendChild(h);
-}
-</script>
-
 <!-- PAGE 1 -->
 <div id="page1">
   <h1>Fatima… will you be my Valentine?</h1>
 
   <div class="buttons">
-    <button onclick="yesClick()">Yes I will</button>
-    <button id="noBtn" onclick="moveNo()">No</button>
+    <button id="yesBtn">Yes I will</button>
+    <button id="noBtn">No</button>
   </div>
 </div>
 
+<!-- FIREWORKS -->
+<canvas id="fireworks"></canvas>
+
 <!-- PAGE 2 -->
 <div id="page2">
-  <canvas id="fireworks"></canvas>
-  <h2>Yayyy! I knew you'd say yesss</h2>
+  <h2>Yayyy! I knew you’d say yesss</h2>
 
   <div class="photos">
     <img src="pic1.jpg">
@@ -159,79 +155,96 @@ for (let i = 0; i < 60; i++) {
     <img src="pic3.jpg">
     <img src="pic4.jpg">
   </div>
+
+  <div class="big-text">Can’t wait to make more memories with you</div>
+  <div class="small-text">You made me the happiest</div>
 </div>
 
 <script>
-/* ===== NO BUTTON MOVEMENT ===== */
-function moveNo() {
-  const btn = document.getElementById("noBtn");
-  const maxX = window.innerWidth - btn.offsetWidth - 20;
-  const maxY = window.innerHeight - btn.offsetHeight - 20;
-
-  btn.style.position = "fixed";
-  btn.style.left = Math.random() * maxX + "px";
-  btn.style.top = Math.random() * maxY + "px";
+/* ---------- HEART GENERATOR ---------- */
+for (let i = 0; i < 40; i++) {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (12 + Math.random() * 30) + "px";
+  heart.style.animationDuration = (6 + Math.random() * 6) + "s";
+  document.body.appendChild(heart);
 }
 
-/* ===== YES CLICK ===== */
-function yesClick() {
+/* ---------- NO BUTTON GUILT TEXT ---------- */
+const guiltTexts = [
+  "Wait… are you sure?",
+  "Really?",
+  "Try again!",
+  "Nice try",
+  "No escape",
+  "Still no?",
+  "Love says no"
+];
+let guiltIndex = 0;
+
+const noBtn = document.getElementById("noBtn");
+
+noBtn.onclick = () => {
+  guiltIndex = (guiltIndex + 1) % guiltTexts.length;
+  noBtn.textContent = guiltTexts[guiltIndex];
+
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 100 - 50;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+};
+
+/* ---------- YES BUTTON ---------- */
+document.getElementById("yesBtn").onclick = () => {
   document.getElementById("page1").style.display = "none";
-  document.getElementById("page2").style.display = "block";
   startFireworks();
+
+  setTimeout(() => {
+    stopFireworks();
+    document.getElementById("page2").style.display = "flex";
+  }, 2500);
+};
+
+/* ---------- FIREWORKS LOGIC ---------- */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let fireworksActive = false;
+
+function startFireworks() {
+  canvas.style.display = "block";
+  fireworksActive = true;
+  animateFireworks();
 }
 
-/* ===== REAL FIREWORKS ===== */
-function startFireworks() {
-  const canvas = document.getElementById("fireworks");
-  const ctx = canvas.getContext("2d");
+function stopFireworks() {
+  fireworksActive = false;
+  canvas.style.display = "none";
+}
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function animateFireworks() {
+  if (!fireworksActive) return;
 
-  const fireworks = [];
+  ctx.fillStyle = "rgba(0,0,0,0.2)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  function Firework() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height / 2;
-    this.particles = [];
-
-    for (let i = 0; i < 60; i++) {
-      this.particles.push({
-        x: this.x,
-        y: this.y,
-        angle: Math.random() * Math.PI * 2,
-        speed: Math.random() * 5 + 2,
-        alpha: 1
-      });
-    }
+  for (let i = 0; i < 60; i++) {
+    ctx.beginPath();
+    ctx.arc(
+      Math.random() * canvas.width,
+      Math.random() * canvas.height,
+      Math.random() * 3 + 1,
+      0,
+      Math.PI * 2
+    );
+    ctx.fillStyle = `hsl(${Math.random() * 360},100%,60%)`;
+    ctx.fill();
   }
 
-  function animate() {
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    fireworks.forEach((fw, index) => {
-      fw.particles.forEach(p => {
-        p.x += Math.cos(p.angle) * p.speed;
-        p.y += Math.sin(p.angle) * p.speed;
-        p.alpha -= 0.015;
-
-        ctx.fillStyle = `rgba(255,105,180,${p.alpha})`;
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,2,0,Math.PI*2);
-        ctx.fill();
-      });
-
-      if (fw.particles[0].alpha <= 0) {
-        fireworks.splice(index,1);
-      }
-    });
-
-    requestAnimationFrame(animate);
-  }
-
-  setInterval(() => fireworks.push(new Firework()), 300);
-  animate();
+  requestAnimationFrame(animateFireworks);
 }
 </script>
 
